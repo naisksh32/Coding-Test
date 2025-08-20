@@ -24,8 +24,8 @@ for _ in range(5):
 nums.sort()
 
 # 평균, 중앙값 구하기
-    avg = int(sum(nums)/5)
-    mid = nums[2]
+avg = int(sum(nums)/5)
+mid = nums[2]
 ```
 ### 시간 복잡도
 O(5): 배열의 원소가 5개 임으로 5번 연산
