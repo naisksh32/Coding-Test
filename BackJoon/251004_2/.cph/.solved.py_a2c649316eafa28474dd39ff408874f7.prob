@@ -1,0 +1,1 @@
+{"name":"Local: solved","url":"c:\\ITStudy\\BackJoon\\251004_2\\solved.py","tests":[{"id":1759574228938,"input":"()(((()())(())()))(())","output":"17"},{"id":1759574244261,"input":"(((()(()()))(())()))(()())","output":"24"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"c:\\ITStudy\\BackJoon\\251004_2\\solved.py","group":"local","local":true}
