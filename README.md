@@ -37,4 +37,7 @@
 250910 - 프로그래머스 - Python - 크레인 인형뽑기 게임 (Lv1) 
  
 251002 - BackJoon - Python - 평범한 배낭(G5)  
-251003 - BackJoon - Python - 제로(S4),  옥상 정원 꾸미기(G5)
+251003 - BackJoon - Python - 제로(S4), 옥상 정원 꾸미기(G5)  
+251004 - BackJoon - Python - 균형잡힌 세상(S4), 쇠막대기(S2)  
+251005 - BackJoon - Python - 그림(S1), 미로탐색(S1)  
+251006 - BackJoon - Python - 유기농배추(S2), 적록색약(G5)  

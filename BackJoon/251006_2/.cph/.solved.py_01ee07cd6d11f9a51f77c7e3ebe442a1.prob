@@ -1,0 +1,1 @@
+{"name":"Local: solved","url":"c:\\ITStudy\\BackJoon\\251006_2\\solved.py","tests":[{"id":1759744406096,"input":"5\nRRRBB\nGGBBB\nBBBRR\nBBRRR\nRRRRR","output":"4 3"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"c:\\ITStudy\\BackJoon\\251006_2\\solved.py","group":"local","local":true}
