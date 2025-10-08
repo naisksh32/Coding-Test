@@ -1,0 +1,1 @@
+{"name":"Local: solved","url":"d:\\ITStudy\\00_Coding Test\\BackJoon\\251008\\solved.py","tests":[{"id":1759897351418,"input":"3\n8\n0 0\n7 0\n100\n0 0\n30 50\n10\n1 1\n1 1","output":"5\n28\n0"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"d:\\ITStudy\\00_Coding Test\\BackJoon\\251008\\solved.py","group":"local","local":true}

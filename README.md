@@ -41,3 +41,4 @@
 251004 - BackJoon - Python - 균형잡힌 세상(S4), 쇠막대기(S2)  
 251005 - BackJoon - Python - 그림(S1), 미로탐색(S1)  
 251006 - BackJoon - Python - 유기농배추(S2), 적록색약(G5)  
+251008 - BackJoon - Python - 나이트의 이동(S1), 토마토(G5)  
