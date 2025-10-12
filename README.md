@@ -45,3 +45,4 @@
 251009 - BackJoon - Python - 벽 부수고 이동하기(G3), 말이 되고픈 원숭이(G3)  
 251010 - BackJoon - Python - N과 M(1)(S3), N과 M(2)(S3), N-Queens(G4)  
 251011 - BackJoon - Python - DFS와 BFS(S2)  
+251012 - BackJoon - Python - 바이러스(S3), 결혼식(S2)  
