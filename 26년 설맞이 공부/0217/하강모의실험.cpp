@@ -1,0 +1,157 @@
+#include <iostream>
+#include <vector>
+#include <cstring>
+#include <algorithm>
+
+using namespace std;
+
+int N;
+int board[501][501];
+long long last_row_sum = 0;
+long long last_col_sum = 0;
+
+// 한 줄에 대한 시뮬레이션 함수
+vector<int> offer(vector<int> line) {
+	// 1. 첫 칸이 비어있으면 힘이 가해지지 않으므로 그대로 반환
+	if (line.empty() || line[0] == 0) {
+		return line;
+	}
+
+	// 2. 초기 상태 설정
+	// "0번째 블록에 힘을 가했다" -> 움직이는 주체는 0번째 인덱스 1개뿐임.
+	// 바로 뒤에 1이 있어도 그건 '나'와 붙은게 아니라 '장애물'로 인식해야 함.
+	int mass_start = 0;
+	int mass_end = 0;
+	double current_power = 1.0; // 초기 길이는 1이므로 파워도 1
+
+	// 3. 이동 시뮬레이션
+	while (mass_end + 1 < line.size()) {
+		int next_pos = mass_end + 1;
+
+		// CASE A: 다음 칸이 빈칸(0)인 경우 -> 이동
+		if (line[next_pos] == 0) {
+			// 덩어리 전체 이동 (앞으로 한 칸 전진)
+			line[next_pos] = 1;
+			line[mass_start] = 0;
+
+			// 좌표 갱신
+			mass_start++;
+			mass_end++;
+
+			// 빈칸 이동 시 파워 1.9배 증가
+			current_power *= 1.9;
+		}
+		// CASE B: 다음 칸이 블록(1)인 경우 -> 장애물 충돌 판정
+		else {
+			// 장애물의 범위(길이) 구하기
+			int obs_start = next_pos;
+			int obs_end = obs_start;
+			while (obs_end + 1 < line.size() && line[obs_end + 1] == 1) {
+				obs_end++;
+			}
+			int obs_len = obs_end - obs_start + 1;
+
+			// 파워 vs 장애물 길이 비교
+			if (current_power > obs_len) {
+				// [합체 성공]
+				// 내 덩어리의 끝을 장애물의 끝까지 확장
+				mass_end = obs_end;
+
+				// 합쳐졌으므로 파워 증가 (기존 파워 + 장애물 길이)
+				current_power += obs_len;
+			}
+			else {
+				// [이동 불가]
+				// 1 1 0 0... 같은 경우 (파워 1, 장애물 1 -> 1 > 1 False)
+				// 힘이 여기서 끊겼으므로, 이 뒤에 있는 블록들은 영향을 받지 않음.
+				// 즉시 종료.
+				break;
+			}
+		}
+	}
+
+	return line;
+}
+
+void init() {
+	N = 0;
+	memset(board, 0, sizeof(board));
+	last_row_sum = 0;
+	last_col_sum = 0;
+}
+
+void input() {
+	cin >> N;
+	for (int i = 0; i < N; i++) {
+		for (int j = 0; j < N; j++) {
+			cin >> board[i][j];
+		}
+	}
+}
+
+void solve() {
+	// 모든 열(Column)에 대해서 연산 진행
+	for (int c = 0; c < N; c++) {
+		// 열 추출
+		vector<int> column(N);
+		for (int r = 0; r < N; r++) {
+			column[r] = board[r][c];
+		}
+
+		// 연산 수행
+		vector<int> result = offer(column);
+
+		// 결과 반영
+		for (int r = 0; r < N; r++) {
+			board[r][c] = result[r];
+		}
+	}
+
+	// 모든 행에 대해서 연산 진행
+	for (int r = 0; r < N; r++) {
+
+		// 행에 해당하는 벡터 추출
+		vector<int> row;
+		for (int c = 0; c < N; c++) {
+			row.push_back(board[r][c]);
+		}
+
+		// 주어진 연산 진행
+		vector<int> arr = offer(row);
+
+		// 보드에 반영
+		for (int c = 0; c < N; c++) {
+			board[r][c] = arr[c];
+		}
+	}
+
+	// 결과 계산 (마지막 행과 마지막 열의 1의 개수 합)
+	for (int i = 0; i < N; i++) {
+		last_row_sum += board[N - 1][i];
+		last_col_sum += board[i][N - 1];
+	}
+}
+
+int main() {
+	int T;
+	cin >> T;
+	for (int t = 1; t <= T; t++) {
+		init();
+		input();
+		solve();
+
+		//cout << endl;
+		//for (int i = 0; i < N; i++) {
+		//	for (int j = 0; j < N; j++) {
+		//		cout << board[i][j] << " ";
+		//	}
+		//	cout << endl;
+		//}
+		//cout << "======" << endl;
+		cout << '#' << t << ' ';
+		cout << last_row_sum << " " << last_col_sum << endl;
+	}
+	
+
+	return 0;
+}
