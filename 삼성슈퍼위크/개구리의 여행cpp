@@ -1,0 +1,139 @@
+#include <algorithm>
+#include <cstring>
+#include <iostream>
+#include <queue>
+#include <vector>
+using namespace std;
+
+int N, Q;
+char board[51][51];
+
+struct Pos {
+    int y, x;
+};
+// 상하좌우 방향배열
+int dy[] = {-1, 1, 0, 0};
+int dx[] = {0, 0, -1, 1};
+
+struct CH {
+    Pos pos;
+    int jump_power;
+    int time;
+
+    bool operator<(CH right) const {
+        if (time > right.time)
+            return true;
+        if (time < right.time)
+            return false;
+        return false;
+    }
+};
+
+int dist[6][51][51];
+
+int dijkstra(Pos start, Pos end) {
+    // 비용 배열 초기화
+    for (int k = 1; k <= 5; k++) {
+        for (int i = 1; i <= N; i++) {
+            for (int j = 1; j <= N; j++) {
+                dist[k][i][j] = 21e8;
+            }
+        }
+    }
+
+    // 우선순위 큐 설정
+    priority_queue<CH> pq;
+    pq.push({start, 1, 0});
+    dist[1][start.y][start.x] = 0;
+
+    while (!pq.empty()) {
+        CH now = pq.top();
+        pq.pop();
+        if (dist[now.jump_power][now.pos.y][now.pos.x] < now.time)
+            continue;
+
+        // 4방향으로 이동
+        for (int d = 0; d < 4; d++) {
+            int ny = now.pos.y + dy[d] * now.jump_power;
+            int nx = now.pos.x + dx[d] * now.jump_power;
+
+            if (ny <= 0 || ny > N || nx <= 0 || nx > N)
+                continue;
+            if (board[ny][nx] == 'S')
+                continue;
+            bool flag = false;
+            for (int j = 1; j <= now.jump_power; j++) {
+                int tmpy = now.pos.y + dy[d] * j;
+                int tmpx = now.pos.x + dx[d] * j;
+
+                // 이동 시 포식자를 만났을 때
+                if (board[tmpy][tmpx] == '#') {
+                    flag = true;
+                    break;
+                }
+            }
+            if (flag)
+                continue;
+
+            int next_cost = now.time + 1;
+            if (dist[now.jump_power][ny][nx] <= next_cost)
+                continue;
+
+            dist[now.jump_power][ny][nx] = next_cost;
+            pq.push({{ny, nx}, now.jump_power, next_cost});
+        }
+
+        // 제자리에서
+        // 점프력 증가
+        if (now.jump_power < 5) {
+            int next_jp = now.jump_power + 1;
+            int next_time = now.time + (next_jp * next_jp);
+
+            if (dist[next_jp][now.pos.y][now.pos.x] > next_time) {
+                dist[next_jp][now.pos.y][now.pos.x] = next_time;
+                pq.push({now.pos, next_jp, next_time});
+            }
+        }
+
+        // 점프력 감소
+        if (now.jump_power > 1) {
+            for (int j = now.jump_power - 1; j >= 1; j--) {
+                int next_jp = j;
+                int next_time = now.time + 1;
+
+                if (dist[next_jp][now.pos.y][now.pos.x] > next_time) {
+                    dist[next_jp][now.pos.y][now.pos.x] = next_time;
+                    pq.push({now.pos, next_jp, next_time});
+                }
+            }
+        }
+    }
+
+    int ans = 21e8;
+    for (int k = 1; k <= 5; k++) {
+        ans = min(ans, dist[k][end.y][end.x]);
+    }
+    return (ans != 21e8) ? ans : -1;
+}
+
+int main() {
+    // 보드 정보 input
+    cin >> N;
+    for (int i = 1; i <= N; i++) {
+        for (int j = 1; j <= N; j++) {
+            cin >> board[i][j];
+        }
+    }
+
+    // 이동 좌표 input
+    cin >> Q;
+    for (int quest = 0; quest < Q; quest++) {
+        int sy, sx, ey, ex;
+        cin >> sy >> sx >> ey >> ex;
+
+        int ans = dijkstra({sy, sx}, {ey, ex});
+        cout << ans << '\n';
+    }
+
+    return 0;
+}
