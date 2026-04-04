@@ -66,13 +66,13 @@ int main() {
         Dijkstra(start, i);
     }
 
-    for (int i = 0; i < K; i++) {
-        cout << nodes[i] << ": ";
-        for (int j = 1; j <= N; j++) {
-            cout << tot_cost[i][j] << ' ';
-        }
-        cout << '\n';
-    }
+    //for (int i = 0; i < K; i++) {
+    //    cout << nodes[i] << ": ";
+    //    for (int j = 1; j <= N; j++) {
+    //        cout << tot_cost[i][j] << ' ';
+    //    }
+    //    cout << '\n';
+    //}
 
     int short_node = -1;
     int min_time = 21e8;
@@ -80,10 +80,16 @@ int main() {
     for (int j = 1; j <= N; j++) {
 
         vector<int> times;
+        bool flag = true;
         for (int i = 0; i < K; i++) {
-            if (tot_cost[i][j] == 21e8) continue;
+            if (tot_cost[i][j] == 21e8) {
+                flag = false;
+                break;
+            }
             times.push_back(tot_cost[i][j]);
         }
+
+        if (!flag) continue;
 
         if(!times.empty()){
 
@@ -96,7 +102,7 @@ int main() {
         }
     }
 
-    cout << min_time;
+    (min_time != 21e8) ? cout << min_time : cout << -1;
 
     return 0;
 }
